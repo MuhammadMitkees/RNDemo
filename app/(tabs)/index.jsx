@@ -1,25 +1,22 @@
-import { StyleSheet, Text, View } from "react-native";
+// App.js
+import * as React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import { Provider } from "react-redux";
+import store from "../../Redux/store";
 import LoginForm from "../../components/LoginForm/loginForm";
-export default function HomeScreen() {
+import HomeScreen from "../../Pages/HomeScreen";
+
+const Stack = createStackNavigator();
+
+function App() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Register</Text>
-      <LoginForm />
-    </View>
+    <Provider store={store}>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={LoginForm} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+      </Stack.Navigator>
+    </Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
-    backgroundColor: "#e9ecef",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-});
+export default App;

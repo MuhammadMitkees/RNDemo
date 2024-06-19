@@ -3,15 +3,16 @@ import React from "react";
 import {
   View,
   TextInput,
-  Button,
   Text,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
 import { Formik } from "formik";
+import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 import * as Yup from "yup";
+import { setUser } from "../../Redux/userSlice";
 
-// Enhanced validation schema
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -27,6 +28,9 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   return (
     <Formik
       initialValues={{
@@ -38,7 +42,8 @@ const LoginForm = () => {
       }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        console.log(values);
+        dispatch(setUser(values));
+        navigation.navigate("Home");
       }}
     >
       {({
