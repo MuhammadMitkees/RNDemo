@@ -1,17 +1,12 @@
-// LoginForm.js
 import React from "react";
-import {
-  View,
-  TextInput,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
 import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import * as Yup from "yup";
 import { setUser } from "../../Redux/userSlice";
+import { useTheme } from "../../Themes/ThemeContext";
+import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
+import styled from "styled-components/native";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -27,9 +22,47 @@ const validationSchema = Yup.object().shape({
     .required("Phone number is required"),
 });
 
+const Container = styled.View`
+  flex: 1;
+  padding: 20px;
+  background-color: ${(props) => props.theme.background};
+`;
+
+const Input = styled.TextInput`
+  height: 40px;
+  border-width: 1px;
+  border-color: ${(props) => props.theme.border};
+  background-color: ${(props) => props.theme.inputBackground};
+  color: ${(props) => props.theme.text};
+  margin-bottom: 15px;
+  padding-horizontal: 10px;
+  border-radius: 5px;
+`;
+
+const ErrorText = styled.Text`
+  font-size: 12px;
+  color: ${(props) => props.theme.error};
+  margin-bottom: 10px;
+`;
+
+const Button = styled.TouchableOpacity`
+  background-color: ${(props) => props.theme.primary};
+  padding-vertical: 15px;
+  border-radius: 5px;
+  align-items: center;
+  margin-top: 10px;
+`;
+
+const ButtonText = styled.Text`
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+`;
+
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const { theme } = useTheme();
 
   return (
     <Formik
@@ -54,21 +87,20 @@ const LoginForm = () => {
         errors,
         touched,
       }) => (
-        <View style={styles.container}>
-          <TextInput
-            style={styles.input}
+        <Container>
+          <ThemeToggle />
+          <Input
             placeholder="Name"
+            placeholderTextColor={theme.text}
             onChangeText={handleChange("name")}
             onBlur={handleBlur("name")}
             value={values.name}
           />
-          {touched.name && errors.name && (
-            <Text style={styles.error}>{errors.name}</Text>
-          )}
+          {touched.name && errors.name && <ErrorText>{errors.name}</ErrorText>}
 
-          <TextInput
-            style={styles.input}
+          <Input
             placeholder="Email"
+            placeholderTextColor={theme.text}
             onChangeText={handleChange("email")}
             onBlur={handleBlur("email")}
             value={values.email}
@@ -76,95 +108,52 @@ const LoginForm = () => {
             autoCapitalize="none"
           />
           {touched.email && errors.email && (
-            <Text style={styles.error}>{errors.email}</Text>
+            <ErrorText>{errors.email}</ErrorText>
           )}
 
-          <TextInput
-            style={styles.input}
+          <Input
             placeholder="Password"
+            placeholderTextColor={theme.text}
             onChangeText={handleChange("password")}
             onBlur={handleBlur("password")}
             value={values.password}
             secureTextEntry
           />
           {touched.password && errors.password && (
-            <Text style={styles.error}>{errors.password}</Text>
+            <ErrorText>{errors.password}</ErrorText>
           )}
 
-          <TextInput
-            style={styles.input}
+          <Input
             placeholder="Confirm Password"
+            placeholderTextColor={theme.text}
             onChangeText={handleChange("confirmPassword")}
             onBlur={handleBlur("confirmPassword")}
             value={values.confirmPassword}
             secureTextEntry
           />
           {touched.confirmPassword && errors.confirmPassword && (
-            <Text style={styles.error}>{errors.confirmPassword}</Text>
+            <ErrorText>{errors.confirmPassword}</ErrorText>
           )}
 
-          <TextInput
-            style={styles.input}
+          <Input
             placeholder="Phone Number"
+            placeholderTextColor={theme.text}
             onChangeText={handleChange("phone")}
             onBlur={handleBlur("phone")}
             value={values.phone}
             keyboardType="phone-pad"
           />
           {touched.phone && errors.phone && (
-            <Text style={styles.error}>{errors.phone}</Text>
+            <ErrorText>{errors.phone}</ErrorText>
           )}
 
-          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>Register</Text>
-          </TouchableOpacity>
-        </View>
+          <Button onPress={handleSubmit}>
+            <ButtonText>Register</ButtonText>
+          </Button>
+        </Container>
       )}
     </Formik>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    backgroundColor: "#f8f9fa",
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    marginVertical: 20,
-  },
-  input: {
-    height: 40,
-    borderColor: "#ced4da",
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-    backgroundColor: "#ffffff",
-  },
-  error: {
-    fontSize: 12,
-    color: "#dc3545",
-    marginBottom: 10,
-  },
-  button: {
-    backgroundColor: "#007bff",
-    paddingVertical: 15,
-    borderRadius: 5,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  buttonText: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-});
 
 export default LoginForm;
