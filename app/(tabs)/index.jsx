@@ -6,6 +6,8 @@ import LoginForm from "../../components/LoginForm/loginForm";
 import HomeScreen from "../../Pages/HomeScreen";
 import { ThemeProvider, useTheme } from "../../Themes/ThemeContext";
 import { ThemeProvider as StyledThemeProvider } from "styled-components/native";
+import "react-native-gesture-handler";
+import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
 const Stack = createStackNavigator();
 
@@ -30,7 +32,7 @@ const AppNavigator = () => {
   );
 };
 
-const App = () => {
+const AppWithoutAnimation = () => {
   return (
     <Provider store={store}>
       <ThemeProvider>
@@ -39,5 +41,6 @@ const App = () => {
     </Provider>
   );
 };
+const App = gestureHandlerRootHOC(() => <AppWithoutAnimation />);
 
 export default App;

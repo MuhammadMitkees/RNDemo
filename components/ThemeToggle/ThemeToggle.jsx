@@ -15,9 +15,6 @@ const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
   const scheme = useColorScheme();
 
-  useEffect(() => {
-    console.log("log el theme", theme);
-  }, [theme]);
   return (
     <View style={styles.container}>
       <SwitchText themeState={themeState}>

@@ -4,7 +4,6 @@ import themeReducer from "./themeSlice";
 
 const loggerMiddleware = (storeAPI) => (next) => (action) => {
   const result = next(action);
-  console.log("Middleware: State after dispatch", storeAPI.getState());
   return result;
 };
 
