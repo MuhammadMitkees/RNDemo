@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import store from "../../Redux/store";
 import LoginForm from "../../components/LoginForm/loginForm";
 import HomeScreen from "../../Pages/HomeScreen";
+import MapScreen from "../../Pages/MapScreen/MapScreen";
 import { ThemeProvider, useTheme } from "../../Themes/ThemeContext";
 import { ThemeProvider as StyledThemeProvider } from "styled-components/native";
 import "react-native-gesture-handler";
@@ -27,6 +28,7 @@ const AppNavigator = () => {
           component={HomeScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name="Map" component={MapScreen} />
       </Stack.Navigator>
     </StyledThemeProvider>
   );

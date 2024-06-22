@@ -13,3 +13,6 @@ export const darkTheme = {
   border: "#555555",
   error: "#ff6b6b",
 };
+export const globalColors = {
+  primary: "#1877f2",
+};
