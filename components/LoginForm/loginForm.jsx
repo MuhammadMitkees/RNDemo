@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
@@ -7,6 +7,8 @@ import { setUser } from "../../Redux/userSlice";
 import { useTheme } from "../../Themes/ThemeContext";
 import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
 import styled from "styled-components/native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { Text } from "react-native";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -20,6 +22,7 @@ const validationSchema = Yup.object().shape({
   phone: Yup.string()
     .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
     .required("Phone number is required"),
+  birthday: Yup.date().required("Birthday is required"),
 });
 
 const Container = styled.View`
@@ -58,11 +61,25 @@ const ButtonText = styled.Text`
   font-size: 16px;
   font-weight: bold;
 `;
-
+const DatePickerContainer = styled.View`
+  margin-bottom: 15px;
+`;
+const DateInput = styled.TouchableOpacity`
+  height: 40px;
+  border-width: 1px;
+  border-color: ${(props) => props.theme.border};
+  background-color: ${(props) => props.theme.inputBackground};
+  color: ${(props) => props.theme.text};
+  margin-bottom: 15px;
+  padding-horizontal: 10px;
+  border-radius: 5px;
+  justify-content: center;
+`;
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { theme } = useTheme();
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   return (
     <Formik
@@ -72,6 +89,7 @@ const LoginForm = () => {
         password: "",
         confirmPassword: "",
         phone: "",
+        birthday: null,
       }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
@@ -83,6 +101,7 @@ const LoginForm = () => {
         handleChange,
         handleBlur,
         handleSubmit,
+        setFieldValue,
         values,
         errors,
         touched,
@@ -145,6 +164,30 @@ const LoginForm = () => {
           />
           {touched.phone && errors.phone && (
             <ErrorText>{errors.phone}</ErrorText>
+          )}
+
+          <DateInput onPress={() => setShowDatePicker(true)}>
+            <Text style={{ color: theme.text }}>
+              {values.birthday
+                ? values.birthday.toDateString()
+                : "Select Birthday"}
+            </Text>
+          </DateInput>
+          {touched.birthday && errors.birthday && (
+            <ErrorText>{errors.birthday}</ErrorText>
+          )}
+          {showDatePicker && (
+            <DateTimePicker
+              value={values.birthday || new Date()}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) => {
+                setShowDatePicker(false);
+                if (selectedDate) {
+                  setFieldValue("birthday", new Date(selectedDate));
+                }
+              }}
+            />
           )}
 
           <Button onPress={handleSubmit}>
