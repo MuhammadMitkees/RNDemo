@@ -8,7 +8,7 @@ import Animated, {
   withTiming,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { globalColors } from "@/Themes/themes";
 const Container = styled.View`

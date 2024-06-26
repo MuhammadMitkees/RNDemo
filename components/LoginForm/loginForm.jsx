@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
@@ -9,7 +9,8 @@ import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
 import styled from "styled-components/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Text } from "react-native";
-
+import { collection, addDoc } from "firebase/firestore";
+import { FIRESTORE_DB } from "../../../firebaseConfig";
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -80,7 +81,19 @@ const LoginForm = () => {
   const navigation = useNavigation();
   const { theme } = useTheme();
   const [showDatePicker, setShowDatePicker] = useState(false);
-
+  const sendDataToServer = async () => {
+    try {
+      const docRef = await addDoc(collection(firestore_DB, "users"), {
+        first: "Ada",
+        last: "Lovelace",
+        born: 1815,
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
+  useEffect(() => {}, []);
   return (
     <Formik
       initialValues={{
