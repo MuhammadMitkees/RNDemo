@@ -11,6 +11,8 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Text } from "react-native";
 import { FIRESTORE_DB } from "../../firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { FIRESTORE_AUTH } from "../../firebaseConfig";
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -91,6 +93,24 @@ const LoginForm = () => {
       console.error("Error adding document: ", e);
     }
   };
+  const signUpCredetials = (auth, email, password) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(
+          "Error code: ",
+          errorCode,
+          "errormessage: ",
+          errorMessage
+        );
+
+        // ..
+      });
+  };
   return (
     <Formik
       initialValues={{
@@ -105,7 +125,7 @@ const LoginForm = () => {
       onSubmit={(values) => {
         dispatch(setUser(values));
         sendDataToServer(values);
-
+        signUpCredetials(FIRESTORE_AUTH, values.email, values.password);
         navigation.navigate("Home");
       }}
     >

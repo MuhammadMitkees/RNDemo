@@ -11,6 +11,8 @@ import Animated, {
 import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { globalColors } from "@/Themes/themes";
+import { signOut } from "firebase/auth";
+import { FIRESTORE_AUTH } from "@/firebaseConfig";
 const Container = styled.View`
   flex: 1;
   justify-content: center;
@@ -37,7 +39,7 @@ const Text = styled.Text`
   color: white;
   font-size: 20;
 `;
-const MapButton = styled.TouchableOpacity`
+const Btn = styled.TouchableOpacity`
   background-color: ${globalColors.primary};
   padding: 10px;
   margin-top: 20px;
@@ -62,6 +64,14 @@ const HomeScreen = () => {
       opacity: opacity.value,
     };
   });
+  const signOutFn = () => {
+    signOut(FIRESTORE_AUTH)
+      .then(() => {})
+      .catch((error) => {
+        // An error happened.
+        console.log("error from signoutFn: ", error);
+      });
+  };
   return (
     <Container>
       <Animated.View style={[animatedStyle, styles.container]}>
@@ -71,9 +81,12 @@ const HomeScreen = () => {
           <Text>Email: {user.email}</Text>
           <Text>Phone: {user.phone}</Text>
         </Box>
-        <MapButton onPress={() => navigation.navigate("Map")}>
+        <Btn onPress={() => navigation.navigate("Map")}>
           <Text> Go to Map</Text>
-        </MapButton>
+        </Btn>
+        <Btn onPress={signOutFn}>
+          <Text>Sign out</Text>
+        </Btn>
       </Animated.View>
     </Container>
   );
