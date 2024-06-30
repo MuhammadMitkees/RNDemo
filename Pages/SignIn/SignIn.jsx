@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { FIRESTORE_AUTH } from "@/firebaseConfig";
 import { globalColors } from "@/Themes/themes";
 import { signInWithEmailAndPassword } from "firebase/auth";
-
+import SignInWithGoogle from "./SignInWithGoogle/SignInWithGoogle";
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -57,6 +57,7 @@ const SignIn = () => {
       <TouchableOpacity style={styles.TouchableOpacity} onPress={handleSignIn}>
         <Text style={styles.buttonText}>Sign In</Text>
       </TouchableOpacity>
+      <SignInWithGoogle />
       <TouchableOpacity
         style={styles.TouchableOpacity}
         onPress={navigateToSignUp}
