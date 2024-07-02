@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { FIRESTORE_AUTH } from "@/firebaseConfig";
 import { globalColors } from "@/Themes/themes";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import SignInWithGoogle from "./SignInWithGoogle/SignInWithGoogle";
+import SignInWithGoogle from "../../components/SignInWithGoogle/SignInWithGoogle";
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

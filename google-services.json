@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "641978767131",
+    "project_id": "rndemo-72b14",
+    "storage_bucket": "rndemo-72b14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641978767131:android:0c7030d4dc4a9f8d27e5be",
+        "android_client_info": {
+          "package_name": "com.muhammadmitkees.RNFormicDemoProject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "641978767131-1uk86smml16kht59247obvkd8qmbj3g9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muhammadmitkees.RNFormicDemoProject",
+            "certificate_hash": "f07a755b85cea114aea732001b016d7df37a14ea"
+          }
+        },
+        {
+          "client_id": "641978767131-nr9pto4euga67ub3g9ostpi7larp382q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muhammadmitkees.RNFormicDemoProject",
+            "certificate_hash": "6b47c7e44056e13e7f9a02e11079e5e897a71e55"
+          }
+        },
+        {
+          "client_id": "641978767131-8t9uuteg78rohbcoi7ek58git7ejfuci.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKkrCvzMy_hKd4gMkPxbyxhNainNV1bp0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "641978767131-8t9uuteg78rohbcoi7ek58git7ejfuci.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

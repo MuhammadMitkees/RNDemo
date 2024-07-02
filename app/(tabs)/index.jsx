@@ -12,7 +12,7 @@ import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 import SignIn from "../../Pages/SignIn/SignIn";
 import { onAuthStateChanged } from "firebase/auth";
 import { FIRESTORE_AUTH } from "@/firebaseConfig";
-
+import "expo-dev-client";
 const Stack = createStackNavigator();
 const InLayoutStack = createStackNavigator();
 
