@@ -10,7 +10,7 @@ const SwitchText = styled.Text`
   color: ${(props) =>
     props.themeState === "dark" ? darkTheme.text : lightTheme.text};
 `;
-const ThemeToggle = () => {
+const ThemeToggle = (props) => {
   const themeState = useSelector((state) => state.theme);
   const { theme, toggleTheme } = useTheme();
   const scheme = useColorScheme();

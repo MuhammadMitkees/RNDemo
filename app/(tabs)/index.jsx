@@ -10,27 +10,28 @@ import { ThemeProvider as StyledThemeProvider } from "styled-components/native";
 import "react-native-gesture-handler";
 import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 import SignIn from "../../Pages/SignIn/SignIn";
-import { onAuthStateChanged } from "firebase/auth";
-import { FIRESTORE_AUTH } from "@/firebaseConfig";
+import auth from "@react-native-firebase/auth";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../Redux/userSlice";
 
 const Stack = createStackNavigator();
 const InLayoutStack = createStackNavigator();
-
 const AppNavigator = () => {
   const { theme } = useTheme();
-  const [user, setuser] = useState(null);
+  const [indexUser, setIndexUser] = useState(null);
+  const dispatch = useDispatch();
+  function onAuthStateChanged(user) {
+    setIndexUser(user?._user);
+    dispatch(setUser(user?._user));
+  }
   useEffect(() => {
-    onAuthStateChanged(FIRESTORE_AUTH, (user) => {
-      if (user) {
-        setuser(user);
-      } else {
-        setuser(null);
-      }
-    });
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
   }, []);
+  // if (initializing) return null;
   return (
     <StyledThemeProvider theme={theme}>
-      {user ? (
+      {indexUser ? (
         <InLayoutStack.Navigator initialRouteName="Home">
           <InLayoutStack.Screen
             name="Home"

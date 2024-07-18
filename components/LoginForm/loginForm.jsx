@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Formik } from "formik";
-import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import * as Yup from "yup";
-import { setUser } from "../../Redux/userSlice";
 import { useTheme } from "../../Themes/ThemeContext";
 import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
 import styled from "styled-components/native";
@@ -11,8 +9,9 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Text } from "react-native";
 import { FIRESTORE_DB } from "../../firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { FIRESTORE_AUTH } from "../../firebaseConfig";
+import auth from "@react-native-firebase/auth";
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -79,7 +78,6 @@ const DateInput = styled.TouchableOpacity`
   justify-content: center;
 `;
 const LoginForm = () => {
-  const dispatch = useDispatch();
   const navigation = useNavigation();
   const { theme } = useTheme();
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -93,8 +91,9 @@ const LoginForm = () => {
       console.error("Error adding document: ", e);
     }
   };
-  const signUpCredetials = (auth, email, password) => {
-    createUserWithEmailAndPassword(auth, email, password)
+  const signUpCredetials = (email, password) => {
+    auth()
+      .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
       })
@@ -123,7 +122,6 @@ const LoginForm = () => {
       }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        dispatch(setUser(values));
         sendDataToServer(values);
         signUpCredetials(FIRESTORE_AUTH, values.email, values.password);
         navigation.navigate("Home");
