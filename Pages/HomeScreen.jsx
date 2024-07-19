@@ -88,6 +88,9 @@ const HomeScreen = () => {
           <Text>Phone: {user.phone}</Text>
         </Box>
         {user?.photoURL && <Img source={{ uri: user?.photoURL }} />}
+        <Btn onPress={() => navigation.navigate("EStore")}>
+          <Text>E-commerce store</Text>
+        </Btn>
         <Btn onPress={() => navigation.navigate("Map")}>
           <Text> Go to Map</Text>
         </Btn>
