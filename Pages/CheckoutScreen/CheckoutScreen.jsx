@@ -1,7 +1,14 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useRoute } from "@react-navigation/native";
-
+import styled from "styled-components";
+import ThemeToggle from "@/components/ThemeToggle/ThemeToggle";
+const Container = styled.View`
+  background-color: ${(props) => props.theme.background};
+`;
+const CheckoutText = styled.Text`
+  color: ${(props) => props.theme.text};
+`;
 const Checkout = () => {
   const route = useRoute();
   const { totalAmount } = route.params;
@@ -10,30 +17,31 @@ const Checkout = () => {
   const totalWithVAT = (total + parseFloat(vat)).toFixed(2);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.summaryText}>Checkout Summary</Text>
+    <Container style={styles.container}>
+      <ThemeToggle />
+      <CheckoutText style={styles.summaryText}>Checkout Summary</CheckoutText>
       <View style={styles.summaryDetails}>
-        <Text style={styles.label}>Total Amount: </Text>
-        <Text style={styles.value}>${totalAmount}</Text>
+        <CheckoutText style={styles.label}>Total Amount: </CheckoutText>
+        <CheckoutText style={styles.value}>${totalAmount}</CheckoutText>
       </View>
       <View style={styles.summaryDetails}>
-        <Text style={styles.label}>VAT (5%): </Text>
-        <Text style={styles.value}>${vat}</Text>
+        <CheckoutText style={styles.label}>VAT (5%): </CheckoutText>
+        <CheckoutText style={styles.value}>${vat}</CheckoutText>
       </View>
       <View style={styles.summaryDetails}>
-        <Text style={styles.label}>Total with VAT: </Text>
-        <Text style={styles.value}>${totalWithVAT}</Text>
+        <CheckoutText style={styles.label}>Total with VAT: </CheckoutText>
+        <CheckoutText style={styles.value}>${totalWithVAT}</CheckoutText>
       </View>
-    </View>
+    </Container>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
     alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "center",
   },
   summaryText: {
     fontSize: 24,

@@ -50,12 +50,12 @@ const AppNavigator = () => {
           <InLayoutStack.Screen
             name="Cart"
             component={CartScreen}
-            options={{ headerShown: true }}
+            options={{ headerShown: false }}
           />
           <InLayoutStack.Screen
             name="Checkout"
             component={Checkout}
-            options={{ headerShown: true }}
+            options={{ headerShown: false }}
           />
           <InLayoutStack.Screen name="Map" component={MapScreen} />
         </InLayoutStack.Navigator>

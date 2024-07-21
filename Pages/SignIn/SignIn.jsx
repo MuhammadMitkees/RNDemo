@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, StyleSheet, TextInput } from "react-native";
+import { Text, StyleSheet, TextInput, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { darkTheme, lightTheme } from "../../Themes/themes";
 import GoogleSignInBtn from "../../components/GoogleSignInBtn/GoogleSignInBtn";
@@ -11,22 +11,25 @@ const SignInBtn = styled.TouchableOpacity`
   align-items: "center";
   padding: 10px;
   border-radius: 4px;
-  marginvertical: 8px;
+  background-color: ${(props) => props.theme.primary};
+  width: 100%;
+  margin-bottom: 5;
+  align-items: center;
 `;
 const BtnTxt = styled.Text`
-  color: ${(props) =>
-    props.themeState === "dark" ? darkTheme.text : lightTheme.text};
+  color: ${(props) => props.theme.text};
   font-size: 16px;
 `;
 const Container = styled.View`
   flex: 1;
-  justify-content: "center";
-  align-items: "center";
+  /* justify-content: "center";
+  align-items: "center"; */
   padding: 16px;
-  background-color: ${(props) =>
-    props.themeState === "dark" ? darkTheme.background : lightTheme.background};
+  background-color: ${(props) => props.theme.background};
 `;
-
+const ToggableTxt = styled.Text`
+  color: ${(props) => props.theme.text};
+`;
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -54,7 +57,8 @@ const SignIn = () => {
   return (
     <Container themeState={themeState} style={styles.container}>
       <ThemeToggle />
-      <Text style={styles.title}>Sign In</Text>
+      <View style={styles.marginDivider}></View>
+      <ToggableTxt style={styles.title}>Sign In</ToggableTxt>
       <TextInput
         themeState={themeState}
         style={styles.input}
@@ -72,13 +76,13 @@ const SignIn = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <SignInBtn onPress={handleSignIn}>
+      <SignInBtn style={styles.SignInBtn} onPress={handleSignIn}>
         <BtnTxt themeState={themeState}>Sign In</BtnTxt>
       </SignInBtn>
       <SignInBtn onPress={navigateToSignUp}>
         <BtnTxt themeState={themeState}>Sign Up</BtnTxt>
       </SignInBtn>
-      <Text>OR</Text>
+      <ToggableTxt>OR</ToggableTxt>
       <GoogleSignInBtn />
     </Container>
   );
@@ -87,7 +91,7 @@ const SignIn = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     padding: 16,
   },
@@ -103,6 +107,10 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 4,
     backgroundColor: lightTheme.background,
+  },
+  SignInBtn: { marginVertical: 8 },
+  marginDivider: {
+    marginBottom: 150,
   },
 });
 

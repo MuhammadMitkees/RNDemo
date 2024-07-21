@@ -15,11 +15,39 @@ import {
 } from "../../Redux/cartSlice";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons"; // Importing icons
+import ThemeToggle from "@/components/ThemeToggle/ThemeToggle";
+import { useTheme } from "@/Themes/ThemeContext";
+import styled from "styled-components";
 
+const Container = styled.View`
+  background-color: ${(props) => props.theme.background};
+`;
+const CartItem = styled.View`
+  border-bottom-color: ${(props) => props.theme.secondary};
+`;
+const ItemName = styled.Text`
+  color: ${(props) => props.theme.secondary};
+`;
+const EmptyCart = styled.Text`
+  color: ${(props) => props.theme.secondary};
+`;
+const CartSummary = styled.View`
+  border-top-color: ${(props) => props.theme.secondary};
+`;
+const TotalAmount = styled.Text`
+  color: ${(props) => props.theme.secondary};
+`;
+const CheckoutButton = styled.TouchableOpacity`
+  background-color: ${(props) => props.theme.primary};
+`;
+const NormalText = styled.Text`
+  color: ${(props) => props.theme.text};
+`;
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const { toggleTheme } = useTheme();
 
   const calculateTotal = () => {
     return cart
@@ -30,46 +58,49 @@ const Cart = () => {
   const renderItem = ({ item }) => {
     const itemTotal = (item.price * item.quantity).toFixed(2);
     return (
-      <View style={styles.cartItem}>
+      <CartItem style={styles.cartItem}>
         <Image source={{ uri: item.image }} style={styles.itemImage} />
         <View style={styles.itemDetails}>
-          <Text style={styles.itemName}>{item.name}</Text>
+          <ItemName style={styles.itemName}>{item.name}</ItemName>
           <Text style={styles.itemPrice}>${item.price}</Text>
           <Text style={styles.itemCategory}>{item.category}</Text>
           <View style={styles.quantityControls}>
             <TouchableOpacity onPress={() => dispatch(decrementQuantity(item))}>
               <Icon name="remove-circle-outline" size={30} color="red" />
             </TouchableOpacity>
-            <Text style={styles.quantityText}>{item.quantity}</Text>
+            <NormalText style={styles.quantityText}>{item.quantity}</NormalText>
             <TouchableOpacity onPress={() => dispatch(incrementQuantity(item))}>
               <Icon name="add-circle-outline" size={30} color="green" />
             </TouchableOpacity>
           </View>
-          <Text style={styles.itemTotal}>Total: ${itemTotal}</Text>
+          <NormalText style={styles.itemTotal}>Total: ${itemTotal}</NormalText>
           <TouchableOpacity onPress={() => dispatch(removeItem(item))}>
             <Icon name="trash-outline" size={30} color="red" />
           </TouchableOpacity>
         </View>
-      </View>
+      </CartItem>
     );
   };
 
   return (
-    <View style={styles.container}>
+    <Container style={styles.container}>
+      <View style={styles.toggleContan}>
+        <ThemeToggle toggleTheme={toggleTheme} />
+      </View>
       <FlatList
         data={cart}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={
-          <Text style={styles.emptyCart}>Your cart is empty</Text>
+          <EmptyCart style={styles.emptyCart}>Your cart is empty</EmptyCart>
         }
       />
       {cart.length > 0 && (
-        <View style={styles.cartSummary}>
-          <Text style={styles.totalAmount}>
+        <CartSummary style={styles.cartSummary}>
+          <TotalAmount style={styles.totalAmount}>
             Total Amount: ${calculateTotal()}
-          </Text>
-          <TouchableOpacity
+          </TotalAmount>
+          <CheckoutButton
             style={styles.checkoutButton}
             onPress={() =>
               navigation.navigate("Checkout", { totalAmount: calculateTotal() })
@@ -82,10 +113,10 @@ const Cart = () => {
               style={styles.checkoutIcon}
             />
             <Text style={styles.checkoutButtonText}>Go to Checkout</Text>
-          </TouchableOpacity>
-        </View>
+          </CheckoutButton>
+        </CartSummary>
       )}
-    </View>
+    </Container>
   );
 };
 
@@ -97,7 +128,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
   },
   itemImage: {
     width: 100,
@@ -140,7 +170,6 @@ const styles = StyleSheet.create({
   cartSummary: {
     padding: 20,
     borderTopWidth: 1,
-    borderTopColor: "#ccc",
     alignItems: "center",
   },
   totalAmount: {
@@ -151,7 +180,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: 10,
-    backgroundColor: "blue",
     padding: 10,
     borderRadius: 5,
   },
@@ -162,6 +190,11 @@ const styles = StyleSheet.create({
   },
   checkoutIcon: {
     marginRight: 5,
+  },
+  toggleContan: {
+    justifyContent: "center",
+    alignContent: "center",
+    flexDirection: "row",
   },
 });
 

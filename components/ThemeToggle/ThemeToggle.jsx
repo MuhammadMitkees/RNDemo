@@ -7,13 +7,11 @@ import styled from "styled-components/native";
 import { useSelector } from "react-redux";
 
 const SwitchText = styled.Text`
-  color: ${(props) =>
-    props.themeState === "dark" ? darkTheme.text : lightTheme.text};
+  color: ${(props) => props.theme.text};
 `;
 const ThemeToggle = (props) => {
   const themeState = useSelector((state) => state.theme);
   const { theme, toggleTheme } = useTheme();
-  const scheme = useColorScheme();
 
   return (
     <View style={styles.container}>
@@ -29,6 +27,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
+    marginBottom: 40,
   },
 });
 export default ThemeToggle;
