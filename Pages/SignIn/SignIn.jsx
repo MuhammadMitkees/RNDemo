@@ -1,45 +1,62 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, StyleSheet, TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { FIRESTORE_AUTH } from "@/firebaseConfig";
-import { globalColors } from "@/Themes/themes";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { darkTheme, lightTheme } from "../../Themes/themes";
+import GoogleSignInBtn from "../../components/GoogleSignInBtn/GoogleSignInBtn";
+import auth from "@react-native-firebase/auth";
+import styled from "styled-components/native";
+import { useSelector } from "react-redux";
+import ThemeToggle from "@/components/ThemeToggle/ThemeToggle";
+const SignInBtn = styled.TouchableOpacity`
+  align-items: "center";
+  padding: 10px;
+  border-radius: 4px;
+  marginvertical: 8px;
+`;
+const BtnTxt = styled.Text`
+  color: ${(props) =>
+    props.themeState === "dark" ? darkTheme.text : lightTheme.text};
+  font-size: 16px;
+`;
+const Container = styled.View`
+  flex: 1;
+  justify-content: "center";
+  align-items: "center";
+  padding: 16px;
+  background-color: ${(props) =>
+    props.themeState === "dark" ? darkTheme.background : lightTheme.background};
+`;
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
-  const auth = FIRESTORE_AUTH;
-
+  const themeState = useSelector((state) => state.theme);
   const handleSignIn = () => {
-    signInWithEmailAndPassword(auth, email, password)
+    auth()
+      .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {})
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(
-          "errorCode from sign in:",
-          errorCode,
-          "errorMessage from signIn",
-          errorMessage
-        );
+        if (error.code === "auth/email-already-in-use") {
+          console.log("That email address is already in use!");
+        }
+
+        if (error.code === "auth/invalid-email") {
+          console.log("That email address is invalid!");
+        }
+
+        console.error(error);
       });
   };
-
   const navigateToSignUp = () => {
     navigation.navigate("SignUp");
   };
-
   return (
-    <View style={styles.container}>
+    <Container themeState={themeState} style={styles.container}>
+      <ThemeToggle />
       <Text style={styles.title}>Sign In</Text>
       <TextInput
+        themeState={themeState}
         style={styles.input}
         placeholder="Email"
         value={email}
@@ -48,22 +65,22 @@ const SignIn = () => {
         autoCapitalize="none"
       />
       <TextInput
+        themeState={themeState}
         style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
-      <TouchableOpacity style={styles.TouchableOpacity} onPress={handleSignIn}>
-        <Text style={styles.buttonText}>Sign In</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.TouchableOpacity}
-        onPress={navigateToSignUp}
-      >
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
-    </View>
+      <SignInBtn onPress={handleSignIn}>
+        <BtnTxt themeState={themeState}>Sign In</BtnTxt>
+      </SignInBtn>
+      <SignInBtn onPress={navigateToSignUp}>
+        <BtnTxt themeState={themeState}>Sign Up</BtnTxt>
+      </SignInBtn>
+      <Text>OR</Text>
+      <GoogleSignInBtn />
+    </Container>
   );
 };
 
@@ -85,18 +102,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 4,
-  },
-  TouchableOpacity: {
-    backgroundColor: globalColors.primary,
-    padding: 10,
-    borderRadius: 4,
-    marginVertical: 8,
-    width: "100%",
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
+    backgroundColor: lightTheme.background,
   },
 });
 

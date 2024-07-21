@@ -8,11 +8,11 @@ import Animated, {
   withTiming,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import { StyleSheet } from "react-native";
+import { Image, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { globalColors } from "@/Themes/themes";
-import { signOut } from "firebase/auth";
-import { FIRESTORE_AUTH } from "@/firebaseConfig";
+import { globalColors } from "../Themes/themes";
+import auth from "@react-native-firebase/auth";
+
 const Container = styled.View`
   flex: 1;
   justify-content: center;
@@ -46,7 +46,12 @@ const Btn = styled.TouchableOpacity`
   border-radius: 5px;
   align-items: center;
 `;
-
+const Img = styled.Image`
+  height: 100px;
+  width: 100px;
+  border-radius: 50px;
+  margin-top: 20px;
+`;
 const HomeScreen = () => {
   const user = useSelector((state) => state.user);
   const opacity = useSharedValue(0);
@@ -65,22 +70,27 @@ const HomeScreen = () => {
     };
   });
   const signOutFn = () => {
-    signOut(FIRESTORE_AUTH)
-      .then(() => {})
-      .catch((error) => {
-        // An error happened.
-        console.log("error from signoutFn: ", error);
+    auth()
+      .signOut()
+      .then()
+      .catch((err) => {
+        console.log("error from signOut :", err);
       });
   };
+
   return (
     <Container>
       <Animated.View style={[animatedStyle, styles.container]}>
         <ThemeToggle />
         <Box>
-          <Title>Welcome, {user.name}!</Title>
+          <Title>Welcome, {user.displayName}!</Title>
           <Text>Email: {user.email}</Text>
           <Text>Phone: {user.phone}</Text>
         </Box>
+        {user?.photoURL && <Img source={{ uri: user?.photoURL }} />}
+        <Btn onPress={() => navigation.navigate("EStore")}>
+          <Text>E-commerce store</Text>
+        </Btn>
         <Btn onPress={() => navigation.navigate("Map")}>
           <Text> Go to Map</Text>
         </Btn>
