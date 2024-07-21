@@ -50,22 +50,13 @@ const GoogleSignInBtn = () => {
       size={GoogleSigninButton.Size.Wide}
       color={GoogleSigninButton.Color.Dark}
       onPress={signInFn}
+      style={styles.btn}
     />
   );
 };
 const styles = StyleSheet.create({
   btn: {
-    backgroundColor: globalColors.primary,
-    padding: 10,
     width: "100%",
-    borderRadius: 4,
-    marginVertical: 8,
-    width: "100%",
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
   },
 });
 export default GoogleSignInBtn;

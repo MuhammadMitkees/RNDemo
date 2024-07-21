@@ -1,18 +1,20 @@
 export const lightTheme = {
-  background: "#ffffff",
-  text: "#000000",
-  primary: "#007bff",
+  primary: "#FF9900",
+  secondary: "#232F3E",
+  text: "#232F3E",
+  background: "#EAEDED",
   border: "#cccccc",
   error: "#dc3545",
 };
 
 export const darkTheme = {
-  background: "#000000",
-  text: "#ffffff",
-  primary: "#1e90ff",
+  primary: "#FF9900",
+  secondary: "#EAEDED",
+  text: "#FFFFFF",
+  background: "#232F3E",
   border: "#555555",
   error: "#ff6b6b",
 };
 export const globalColors = {
-  primary: "#1877f2",
+  primary: "#146eb4",
 };

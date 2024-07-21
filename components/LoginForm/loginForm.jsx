@@ -6,7 +6,7 @@ import { useTheme } from "../../Themes/ThemeContext";
 import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
 import styled from "styled-components/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { FIRESTORE_DB } from "../../firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
 import { FIRESTORE_AUTH } from "../../firebaseConfig";
@@ -123,8 +123,7 @@ const LoginForm = () => {
       validationSchema={validationSchema}
       onSubmit={(values) => {
         sendDataToServer(values);
-        signUpCredetials(FIRESTORE_AUTH, values.email, values.password);
-        navigation.navigate("Home");
+        signUpCredetials(values.email, values.password);
       }}
     >
       {({
@@ -137,7 +136,9 @@ const LoginForm = () => {
         touched,
       }) => (
         <Container>
-          <ThemeToggle />
+          <View style={styles.themeToggle}>
+            <ThemeToggle />
+          </View>
           <Input
             placeholder="Name"
             placeholderTextColor={theme.text}
@@ -228,5 +229,9 @@ const LoginForm = () => {
     </Formik>
   );
 };
-
+const styles = StyleSheet.create({
+  themeToggle: {
+    alignItems: "center",
+  },
+});
 export default LoginForm;
